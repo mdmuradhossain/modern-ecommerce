@@ -3,19 +3,25 @@ package io.murad.modern.ecommerce.database.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-public class SecurityUser implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private final User user;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(user::getAuthority);
+
+        return user.getAuthorities().stream()
+                .map((authority) ->
+                        new SimpleGrantedAuthority(authority.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -35,12 +41,12 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
