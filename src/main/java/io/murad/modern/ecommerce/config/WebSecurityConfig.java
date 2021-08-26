@@ -1,6 +1,6 @@
 package io.murad.modern.ecommerce.config;
 
-import io.murad.modern.ecommerce.service.AuthenticationProviderService;
+import io.murad.modern.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //    private final UserDetailsService userDetailsService;
-    private final AuthenticationProviderService authenticationProvider;
+    private final UserService userDetailsService;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,10 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+        .passwordEncoder(passwordEncoder());
 
-//        auth.userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
-        auth.authenticationProvider(authenticationProvider);
     }
 
 
@@ -48,13 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SCryptPasswordEncoder sCryptPasswordEncoder() {
-        return new SCryptPasswordEncoder();
-    }
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public SCryptPasswordEncoder sCryptPasswordEncoder() {
+//        return new SCryptPasswordEncoder();
+//    }
 }

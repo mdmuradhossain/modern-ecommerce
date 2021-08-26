@@ -1,6 +1,7 @@
 INSERT IGNORE INTO `modern_ecommerce`.`user` (`id`, `username`, `password`,
                                     `algorithm`) VALUES ('1', 'john', '$2a$10$xn3LI/
 AjqicFYZFruSwve.681477XaVNaUQbr1gioaWPn4t1KsnmG', 'BCRYPT');
+INSERT IGNORE INTO `modern_ecommerce`.`user` (`id`, `username`, `password`) VALUES ('1', 'jane', '12345');
 
 INSERT IGNORE INTO `modern_ecommerce`.`authority` (`id`, `name`, `user`) VALUES ('1',
                                                                        'READ', '1');

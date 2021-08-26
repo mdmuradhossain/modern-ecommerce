@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -23,8 +22,8 @@ public class User {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private EncryptionAlgorithm algorithm;
+//    @Enumerated(EnumType.STRING)
+//    private EncryptionAlgorithm algorithm;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<Authority> authorities;
