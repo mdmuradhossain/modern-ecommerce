@@ -32,6 +32,7 @@ public class AuthService {
         userRepository.save(user);
 
         String token = generateAccountVerificationToken(user);
+
     }
 
     public String generateAccountVerificationToken(User user) {
