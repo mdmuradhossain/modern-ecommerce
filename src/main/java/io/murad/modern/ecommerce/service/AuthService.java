@@ -2,11 +2,14 @@ package io.murad.modern.ecommerce.service;
 
 import io.murad.modern.ecommerce.config.PasswordEncoderImpl;
 import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
+import io.murad.modern.ecommerce.database.model.NotificationEmail;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,10 @@ public class AuthService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+    private final Environment env;
+    @Value("${spring.application.name}")
+    private final String appName;
 
     @Transactional
     public void register(RegisterRequest registerRequest) {
@@ -32,6 +39,9 @@ public class AuthService {
         userRepository.save(user);
 
         String token = generateAccountVerificationToken(user);
+        String emailBody = "Thank you for signing up to " + appName + ". Please click on the below url to activate your account: " + "http://localhost:8080/auth/accountVerification/" + token;
+        mailService.sendMail(new NotificationEmail("Please activate your Account",
+                user.getEmailAddress(), emailBody));
 
     }
 

@@ -1,10 +1,13 @@
 package io.murad.modern.ecommerce.database.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationEmail {
 
     private String subject;
