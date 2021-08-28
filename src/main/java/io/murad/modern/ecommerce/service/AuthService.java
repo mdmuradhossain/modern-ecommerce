@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.repository.UserRepository;
+import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -32,11 +34,12 @@ public class AuthService {
         String token = generateAccountVerificationToken(user);
     }
 
-    public String generateAccountVerificationToken(User user){
+    public String generateAccountVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
         AccountVerificationToken verificationToken = new AccountVerificationToken();
         verificationToken.setToken(token);
         verificationToken.setUser(user);
+        verificationTokenRepository.save(verificationToken);
         return token;
     }
 
