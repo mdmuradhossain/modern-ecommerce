@@ -1,6 +1,7 @@
 package io.murad.modern.ecommerce.service;
 
 import io.murad.modern.ecommerce.config.PasswordEncoderImpl;
+import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.repository.UserRepository;
@@ -25,12 +26,20 @@ public class AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmailAddress(registerRequest.getEmail());
+        user.setEnable(false);
         userRepository.save(user);
+
+        String token = generateAccountVerificationToken(user);
     }
 
     public String generateAccountVerificationToken(User user){
         String token = UUID.randomUUID().toString();
+        AccountVerificationToken verificationToken = new AccountVerificationToken();
+        verificationToken.setToken(token);
+        verificationToken.setUser(user);
+        return token;
     }
+
     public void verifyAccount(String token) {
 
     }
