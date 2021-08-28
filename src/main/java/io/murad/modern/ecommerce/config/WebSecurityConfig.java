@@ -21,8 +21,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .defaultSuccessUrl("/main", true);
+        http.csrf().disable()
+                .formLogin()
+                .defaultSuccessUrl("/hello", true);
         http.authorizeRequests()
                 .anyRequest()
                 .authenticated();
@@ -31,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-        .passwordEncoder(passwordEncoder.passwordEncoder());
+                .passwordEncoder(passwordEncoder.passwordEncoder());
 
     }
 

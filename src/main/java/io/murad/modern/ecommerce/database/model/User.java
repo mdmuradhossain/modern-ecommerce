@@ -30,6 +30,7 @@ public class User {
     private String emailAddress;
 
 
+    private boolean enable;
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<Authority> authorities;
 }
