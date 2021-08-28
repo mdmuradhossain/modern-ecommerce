@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
 import io.murad.modern.ecommerce.database.model.NotificationEmail;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
+import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -55,6 +57,19 @@ public class AuthService {
     }
 
     public void verifyAccount(String token) {
-
+        Optional<AccountVerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        if (token.equals(verificationToken.get())) {
+            getUserAndEnableAccount(verificationToken.get());
+        }else {
+            throw new ModernEcommerceException("Verification failed");
+        }
     }
+
+    private void getUserAndEnableAccount(AccountVerificationToken verificationToken) {
+        String username = verificationToken.getUser().getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ModernEcommerceException("User not Found with " + username));
+        user.setEnable(true);
+        userRepository.save(user);
+    }
+
 }
