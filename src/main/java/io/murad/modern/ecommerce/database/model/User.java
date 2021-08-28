@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
@@ -18,12 +20,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String username;
 
+    @NotEmpty
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private EncryptionAlgorithm algorithm;
+    @Email
+    private String emailAddress;
+
 
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<Authority> authorities;
