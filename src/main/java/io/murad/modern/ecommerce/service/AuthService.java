@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -24,5 +26,12 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmailAddress(registerRequest.getEmail());
         userRepository.save(user);
+    }
+
+    public String generateAccountVerificationToken(User user){
+        String token = UUID.randomUUID().toString();
+    }
+    public void verifyAccount(String token) {
+
     }
 }

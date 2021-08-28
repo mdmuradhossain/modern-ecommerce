@@ -15,9 +15,14 @@ public class AuthResource {
     private final AuthService authService;
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest) {
         authService.register(registerRequest);
         return new ResponseEntity<>("User Registration Successful", HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/accountVerification/{token}")
+    public ResponseEntity<String> verifyAccountWithEmail(@PathVariable("token") String token) {
+        authService.verifyAccount(token);
+        return new ResponseEntity<>("User Activated Successfully.", HttpStatus.OK);
+    }
 }
