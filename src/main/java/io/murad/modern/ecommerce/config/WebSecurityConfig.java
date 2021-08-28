@@ -21,10 +21,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .formLogin()
-                .defaultSuccessUrl("/hello", true);
+        http.csrf().disable();
+//                .formLogin()
+//                .defaultSuccessUrl("/hello", true);
         http.authorizeRequests()
+                .mvcMatchers("/auth/**").permitAll()
                 .anyRequest()
                 .authenticated();
     }

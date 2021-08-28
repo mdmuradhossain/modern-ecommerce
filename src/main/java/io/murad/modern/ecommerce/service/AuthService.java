@@ -9,6 +9,10 @@ import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,18 +22,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
-@AllArgsConstructor
 @Transactional
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final VerificationTokenRepository verificationTokenRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final MailService mailService;
-    private final Environment env;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailService mailService;
+    private  Environment env;
+
     @Value("${spring.application.name}")
-    private final String appName;
+    private String appName;
 
     @Transactional
     public void register(RegisterRequest registerRequest) {
@@ -39,7 +48,7 @@ public class AuthService {
         user.setEmailAddress(registerRequest.getEmail());
         user.setEnable(false);
         userRepository.save(user);
-
+        log.info("User Saved..."+user.getUsername());
         String token = generateAccountVerificationToken(user);
         String emailBody = "Thank you for signing up to " + appName + ". Please click on the below url to activate your account: " + "http://localhost:8080/auth/accountVerification/" + token;
         mailService.sendMail(new NotificationEmail("Please activate your Account",
@@ -65,7 +74,8 @@ public class AuthService {
         }
     }
 
-    private void getUserAndEnableAccount(AccountVerificationToken verificationToken) {
+    @Transactional
+    public void getUserAndEnableAccount(AccountVerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ModernEcommerceException("User not Found with " + username));
         user.setEnable(true);

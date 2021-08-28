@@ -1,5 +1,6 @@
 package io.murad.modern.ecommerce.resource;
 
+import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -24,5 +25,10 @@ public class AuthResource {
     public ResponseEntity<String> verifyAccountWithEmail(@PathVariable("token") String token) {
         authService.verifyAccount(token);
         return new ResponseEntity<>("User Activated Successfully.", HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest authenticationRequest){
+
     }
 }
