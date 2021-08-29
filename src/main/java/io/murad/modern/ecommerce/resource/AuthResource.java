@@ -1,5 +1,6 @@
 package io.murad.modern.ecommerce.resource;
 
+import io.murad.modern.ecommerce.dto.AuthenticationRequest;
 import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.service.AuthService;
@@ -28,7 +29,8 @@ public class AuthResource {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest authenticationRequest){
-
+    public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest authenticationRequest) {
+        AuthenticationResponse authenticationResponse = authService.signIn(authenticationRequest);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 }

@@ -4,6 +4,8 @@ import io.murad.modern.ecommerce.config.PasswordEncoderImpl;
 import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
 import io.murad.modern.ecommerce.database.model.NotificationEmail;
 import io.murad.modern.ecommerce.database.model.User;
+import io.murad.modern.ecommerce.dto.AuthenticationRequest;
+import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.repository.UserRepository;
@@ -15,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +40,8 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private  Environment env;
 
     @Value("${spring.application.name}")
@@ -67,11 +74,13 @@ public class AuthService {
 
     public void verifyAccount(String token) {
         Optional<AccountVerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-        if (token.equals(verificationToken.get())) {
-            getUserAndEnableAccount(verificationToken.get());
-        }else {
-            throw new ModernEcommerceException("Verification failed");
-        }
+        verificationToken.orElseThrow(()-> new ModernEcommerceException("Verification Failed"));
+        getUserAndEnableAccount(verificationToken.get());
+//        if (token.equals(verificationToken.get())) {
+//            getUserAndEnableAccount(verificationToken.get());
+//        }else {
+//            throw new ModernEcommerceException("Verification failed");
+//        }
     }
 
     @Transactional
@@ -82,4 +91,11 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    public AuthenticationResponse signIn(AuthenticationRequest authenticationRequest) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
+        return AuthenticationResponse.builder()
+                .username(authenticationRequest.getUsername())
+                .password(authenticationRequest.getPassword())
+                .build();
+    }
 }
