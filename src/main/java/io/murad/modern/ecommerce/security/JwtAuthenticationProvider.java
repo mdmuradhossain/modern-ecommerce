@@ -1,5 +1,6 @@
 package io.murad.modern.ecommerce.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,5 +71,13 @@ public class JwtAuthenticationProvider {
         parser.setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
 //        parser().setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
         return true;
+    }
+
+    public String getUsernameFromJwt(String token) {
+        Claims claims = parser()
+                .setSigningKey(getPublicKey())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
     }
 }
