@@ -76,11 +76,6 @@ public class AuthService {
         Optional<AccountVerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         verificationToken.orElseThrow(()-> new ModernEcommerceException("Verification Failed"));
         getUserAndEnableAccount(verificationToken.get());
-//        if (token.equals(verificationToken.get())) {
-//            getUserAndEnableAccount(verificationToken.get());
-//        }else {
-//            throw new ModernEcommerceException("Verification failed");
-//        }
     }
 
     @Transactional
@@ -95,7 +90,6 @@ public class AuthService {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
         return AuthenticationResponse.builder()
                 .username(authenticationRequest.getUsername())
-                .password(authenticationRequest.getPassword())
                 .build();
     }
 }
