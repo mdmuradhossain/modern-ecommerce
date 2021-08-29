@@ -53,4 +53,12 @@ public class JwtAuthenticationProvider {
             throw new ModernEcommerceException("Exception occurred while signWIth Private Key" + e.getMessage());
         }
     }
+
+    private PublicKey getPublicKey() {
+        try {
+            return keyStore.getCertificate("mcommerce").getPublicKey();
+        } catch (KeyStoreException e) {
+            throw new ModernEcommerceException("Exception occurred while " + "retrieving public key from keystore "+e.getMessage());
+        }
+    }
 }
