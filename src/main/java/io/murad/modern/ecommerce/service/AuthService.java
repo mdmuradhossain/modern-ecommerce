@@ -10,6 +10,7 @@ import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
+import io.murad.modern.ecommerce.security.JwtAuthenticationProvider;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,7 +45,9 @@ public class AuthService {
     private MailService mailService;
     @Autowired
     private AuthenticationManager authenticationManager;
-    private  Environment env;
+
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Value("${spring.application.name}")
     private String appName;
@@ -87,8 +92,12 @@ public class AuthService {
     }
 
     public AuthenticationResponse signIn(AuthenticationRequest authenticationRequest) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword()));
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        String token = jwtAuthenticationProvider.generateJwtToken(authenticate);
         return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .expiresAt(Instant.now().plusMillis(jwtAuthenticationProvider.getJwtExpirationInMillis()))
                 .username(authenticationRequest.getUsername())
                 .build();
     }
