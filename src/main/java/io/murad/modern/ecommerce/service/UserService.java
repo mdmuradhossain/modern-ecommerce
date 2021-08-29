@@ -4,6 +4,8 @@ import io.murad.modern.ecommerce.database.model.CustomUserDetails;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,9 +15,11 @@ import java.util.ArrayList;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

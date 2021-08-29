@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 @Configuration
@@ -16,7 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userDetailsService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoderImpl passwordEncoder;
 
     @Override
@@ -44,4 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return new UserService();
+    }
 }
