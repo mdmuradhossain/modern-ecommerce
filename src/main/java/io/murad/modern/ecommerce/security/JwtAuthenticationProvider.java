@@ -16,6 +16,8 @@ import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.util.Date;
 
+import static io.jsonwebtoken.Jwts.parser;
+
 @Service
 public class JwtAuthenticationProvider {
 
@@ -58,7 +60,15 @@ public class JwtAuthenticationProvider {
         try {
             return keyStore.getCertificate("mcommerce").getPublicKey();
         } catch (KeyStoreException e) {
-            throw new ModernEcommerceException("Exception occurred while " + "retrieving public key from keystore "+e.getMessage());
+            throw new ModernEcommerceException("Exception occurred while " + "retrieving public key from keystore " + e.getMessage());
         }
+    }
+
+    public boolean validateJwtToken(String jwt) {
+        var parser = Jwts.parserBuilder()
+                .build();
+        parser.setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
+//        parser().setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
+        return true;
     }
 }
