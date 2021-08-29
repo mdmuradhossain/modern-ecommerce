@@ -80,4 +80,8 @@ public class JwtAuthenticationProvider {
                 .getBody();
         return claims.getSubject();
     }
+
+    public Long getJwtExpirationInMillis() {
+        return jwtExpirationInMillis;
+    }
 }
