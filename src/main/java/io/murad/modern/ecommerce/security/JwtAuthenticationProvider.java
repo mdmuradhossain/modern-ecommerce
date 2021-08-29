@@ -11,9 +11,7 @@ import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.util.Date;
@@ -46,5 +44,13 @@ public class JwtAuthenticationProvider {
                 .signWith(getPrivateKey())
                 .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
                 .compact();
+    }
+
+    private PrivateKey getPrivateKey() {
+        try {
+            return (PrivateKey) keyStore.getKey("mecommerce", "muradhossain".toCharArray());
+        } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException e) {
+            throw new ModernEcommerceException("Exception occurred while signWIth Private Key" + e.getMessage());
+        }
     }
 }
