@@ -24,14 +24,14 @@ public class JwtAuthenticationProvider {
 
     private KeyStore keyStore;
 
-    @Value("900000")
+    @Value("${jwt.expiration.time}")
     private Long jwtExpirationInMillis;
 
     @PostConstruct
     public void init() {
         try {
             keyStore = KeyStore.getInstance("JKS");
-            FileInputStream jksFile = new FileInputStream("src/main/resources/modern_ecommerce");
+            FileInputStream jksFile = new FileInputStream("src/main/resources/modern_ecommerce.jks");
             keyStore.load(jksFile, "muradhossain".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | IOException | CertificateException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class JwtAuthenticationProvider {
 
     public String generateJwtToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
-
+//        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
@@ -51,7 +51,7 @@ public class JwtAuthenticationProvider {
 
     private PrivateKey getPrivateKey() {
         try {
-            return (PrivateKey) keyStore.getKey("mecommerce", "muradhossain".toCharArray());
+            return (PrivateKey) keyStore.getKey("mcommerce", "muradhossain".toCharArray());
         } catch (UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException e) {
             throw new ModernEcommerceException("Exception occurred while signWIth Private Key" + e.getMessage());
         }
@@ -61,23 +61,26 @@ public class JwtAuthenticationProvider {
         try {
             return keyStore.getCertificate("mcommerce").getPublicKey();
         } catch (KeyStoreException e) {
-            throw new ModernEcommerceException("Exception occurred while " + "retrieving public key from keystore " + e.getMessage());
+            throw new ModernEcommerceException("Exception occurred while retrieving public key from keystore " + e.getMessage());
         }
     }
 
     public boolean validateJwtToken(String jwt) {
-        var parser = Jwts.parserBuilder()
-                .build();
-        parser.setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
-//        parser().setSigningKey(getPrivateKey()).parseClaimsJws(jwt);
+//        parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
+        Jwts.parserBuilder()
+                .setSigningKey(getPublicKey())
+                .build()
+                .parseClaimsJws(jwt);
+//        Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
         return true;
     }
 
     public String getUsernameFromJwt(String token) {
-        Claims claims = parser()
+        Claims claims = Jwts.parser()
                 .setSigningKey(getPublicKey())
                 .parseClaimsJws(token)
                 .getBody();
+
         return claims.getSubject();
     }
 

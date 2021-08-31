@@ -18,7 +18,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
+
     private UserRepository userRepository;
 
     @Override
