@@ -1,8 +1,10 @@
 package io.murad.modern.ecommerce.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -10,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.time.Instant;
@@ -20,6 +22,7 @@ import java.util.Date;
 import static io.jsonwebtoken.Jwts.parser;
 
 @Service
+@Slf4j
 public class JwtAuthenticationProvider {
 
     private KeyStore keyStore;
@@ -31,8 +34,9 @@ public class JwtAuthenticationProvider {
     public void init() {
         try {
             keyStore = KeyStore.getInstance("JKS");
-            FileInputStream jksFile = new FileInputStream("src/main/resources/modern_ecommerce.jks");
-            keyStore.load(jksFile, "muradhossain".toCharArray());
+//            FileInputStream jksFile = new FileInputStream("src/main/resources/modern_ecommerce.jks");
+            InputStream resourceStream = getClass().getResourceAsStream("/modern_ecommerce.jks");
+            keyStore.load(resourceStream, "muradhossain".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | IOException | CertificateException e) {
             e.printStackTrace();
             throw new ModernEcommerceException("Exception occurred while loading keystore..." + e.getMessage());
@@ -40,8 +44,9 @@ public class JwtAuthenticationProvider {
     }
 
     public String generateJwtToken(Authentication authentication) {
-        User principal = (User) authentication.getPrincipal();
-//        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
+//        User principal = (User) authentication.getPrincipal();
+//        io.murad.modern.ecommerce.database.model.User principal = (io.murad.modern.ecommerce.database.model.User) authentication.getPrincipal();
+        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
@@ -66,22 +71,28 @@ public class JwtAuthenticationProvider {
     }
 
     public boolean validateJwtToken(String jwt) {
+        try {
+            Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
+            return true;
+        } catch (JwtException e) {
+            log.warn("Invalid JWT!", e);
+        }
+        return false;
 //        parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
-        Jwts.parserBuilder()
-                .setSigningKey(getPublicKey())
-                .build()
-                .parseClaimsJws(jwt);
+//        Jwts.parserBuilder()
+//                .setSigningKey(getPublicKey())
+//                .build()
+//                .parseClaimsJws(jwt);
 //        Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
-        return true;
     }
 
     public String getUsernameFromJwt(String token) {
-        Claims claims = Jwts.parser()
+        Claims claims = parser()
                 .setSigningKey(getPublicKey())
                 .parseClaimsJws(token)
                 .getBody();
-
         return claims.getSubject();
+
     }
 
     public Long getJwtExpirationInMillis() {

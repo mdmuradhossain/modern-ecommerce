@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class User {
     private String password;
 
     @Email
+    @NotBlank(message = "Email is required")
     private String emailAddress;
 
 
