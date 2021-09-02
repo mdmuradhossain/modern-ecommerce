@@ -58,6 +58,15 @@ public class JwtAuthenticationProvider {
                 .compact();
     }
 
+    public String generateTokenWithUserName(String username) throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(Date.from((Instant.now())))
+                .signWith(getPrivateKey())
+                .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
+                .compact();
+    }
+
     private PrivateKey getPrivateKey() {
         try {
             return (PrivateKey) keyStore.getKey("mcommerce", "muradhossain".toCharArray());

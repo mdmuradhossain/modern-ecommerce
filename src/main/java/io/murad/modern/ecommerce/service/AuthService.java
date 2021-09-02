@@ -6,6 +6,7 @@ import io.murad.modern.ecommerce.database.model.NotificationEmail;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AuthenticationRequest;
 import io.murad.modern.ecommerce.dto.AuthenticationResponse;
+import io.murad.modern.ecommerce.dto.RefreshTokenRequest;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.repository.UserRepository;
@@ -26,6 +27,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,7 +49,8 @@ public class AuthService {
     private MailService mailService;
     @Autowired
     private AuthenticationManager authenticationManager;
-
+    @Autowired
+    private RefreshTokenService refreshTokenService;
     @Autowired
     private JwtAuthenticationProvider jwtAuthenticationProvider;
 
@@ -98,8 +103,20 @@ public class AuthService {
         log.debug(token);
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtAuthenticationProvider.getJwtExpirationInMillis()))
                 .username(authenticationRequest.getUsername())
+                .build();
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtAuthenticationProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());\
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtAuthenticationProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
                 .build();
     }
 }
