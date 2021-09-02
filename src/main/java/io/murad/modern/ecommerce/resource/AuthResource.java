@@ -2,12 +2,17 @@ package io.murad.modern.ecommerce.resource;
 
 import io.murad.modern.ecommerce.dto.AuthenticationRequest;
 import io.murad.modern.ecommerce.dto.AuthenticationResponse;
+import io.murad.modern.ecommerce.dto.RefreshTokenRequest;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
 @RestController
 @RequestMapping(path = "/auth")
@@ -32,5 +37,11 @@ public class AuthResource {
     public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest authenticationRequest) {
         AuthenticationResponse authenticationResponse = authService.signIn(authenticationRequest);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/refresh/token")
+    public ResponseEntity<AuthenticationResponse> refreshTokens(@RequestBody RefreshTokenRequest refreshTokenRequest) throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
+        AuthenticationResponse authenticationResponseFromRefreshToken = authService.refreshToken(refreshTokenRequest);
+        return new ResponseEntity<>(authenticationResponseFromRefreshToken, HttpStatus.OK);
     }
 }
