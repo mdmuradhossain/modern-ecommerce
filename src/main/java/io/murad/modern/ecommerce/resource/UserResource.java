@@ -1,6 +1,7 @@
 package io.murad.modern.ecommerce.resource;
 
 import io.murad.modern.ecommerce.database.model.User;
+import io.murad.modern.ecommerce.dto.AdminUserDto;
 import io.murad.modern.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,8 @@ public class UserResource {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        userService.addUserOrAdmin(user);
+    public ResponseEntity<?> createUser(@RequestBody AdminUserDto adminUserDto) {
+        userService.addUserOrAdmin(adminUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
