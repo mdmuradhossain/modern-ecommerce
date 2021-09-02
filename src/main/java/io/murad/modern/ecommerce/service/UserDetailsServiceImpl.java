@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     @Autowired
@@ -32,7 +32,5 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username Not Found " + username));
         return new CustomUserDetails(user);
-
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
     }
 }

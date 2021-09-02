@@ -15,8 +15,6 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     public void addRole(Role role) {
-//        Role role = new Role();
-        role.setRoleName("SUPER_ADMIN");
         roleRepository.save(role);
     }
 

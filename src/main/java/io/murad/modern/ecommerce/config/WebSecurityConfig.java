@@ -1,7 +1,7 @@
 package io.murad.modern.ecommerce.config;
 
 import io.murad.modern.ecommerce.security.JwtAuthenticationFilter;
-import io.murad.modern.ecommerce.service.UserService;
+import io.murad.modern.ecommerce.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,6 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserService();
+        return new UserDetailsServiceImpl();
     }
 }
