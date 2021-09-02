@@ -48,9 +48,9 @@ public class JwtAuthenticationProvider {
     public String generateJwtToken(Authentication authentication) {
 //        User principal = (User) authentication.getPrincipal();
 //        io.murad.modern.ecommerce.database.model.User principal = (io.murad.modern.ecommerce.database.model.User) authentication.getPrincipal();
-        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
+//        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
 //        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
@@ -79,14 +79,12 @@ public class JwtAuthenticationProvider {
             Jwts.parserBuilder().setSigningKey(getPublicKey()).build().parseClaimsJws(jwt);
             return true;
         } catch (JwtException e) {
-            log.warn(e.getMessage());
+            log.info(e.getMessage());
         }
         return false;
+//        3 ways
 //        parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
-//        Jwts.parserBuilder()
-//                .setSigningKey(getPublicKey())
-//                .build()
-//                .parseClaimsJws(jwt);
+//        Jwts.parserBuilder().setSigningKey(getPublicKey()).build().parseClaimsJws(jwt);
 //        Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
     }
 

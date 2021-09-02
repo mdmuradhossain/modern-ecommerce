@@ -1,6 +1,6 @@
 package io.murad.modern.ecommerce.service;
 
-//import io.murad.modern.ecommerce.database.model.CustomUserDetails;
+import io.murad.modern.ecommerce.database.model.CustomUserDetails;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -25,14 +25,14 @@ public class UserService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        Supplier<UsernameNotFoundException> s =
 //                () -> new UsernameNotFoundException(
 //                        "Problem during authentication!");
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username Not Found " + username));
-//        return new CustomUserDetails(user);
+        return new CustomUserDetails(user);
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
     }
 }
