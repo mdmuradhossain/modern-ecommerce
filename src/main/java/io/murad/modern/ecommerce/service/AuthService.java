@@ -3,12 +3,14 @@ package io.murad.modern.ecommerce.service;
 import io.murad.modern.ecommerce.config.PasswordEncoderImpl;
 import io.murad.modern.ecommerce.database.model.AccountVerificationToken;
 import io.murad.modern.ecommerce.database.model.NotificationEmail;
+import io.murad.modern.ecommerce.database.model.Role;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AuthenticationRequest;
 import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RefreshTokenRequest;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
+import io.murad.modern.ecommerce.repository.RoleRepository;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
 import io.murad.modern.ecommerce.security.JwtAuthenticationProvider;
@@ -31,7 +33,9 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -52,6 +56,8 @@ public class AuthService {
     @Autowired
     private RefreshTokenService refreshTokenService;
     @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
     private JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Value("${spring.application.name}")
@@ -64,6 +70,9 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmailAddress(registerRequest.getEmail());
         user.setEnable(false);
+        Set<Role> roles = new HashSet<>();
+        roleRepository.findByRoleName("ROLE_USER").ifPresent(roles::add);
+        user.setRoles(roles);
         userRepository.save(user);
         log.info("User Saved..."+user.getUsername());
         String token = generateAccountVerificationToken(user);

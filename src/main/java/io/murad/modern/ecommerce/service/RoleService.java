@@ -14,6 +14,7 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
+    @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
     }
