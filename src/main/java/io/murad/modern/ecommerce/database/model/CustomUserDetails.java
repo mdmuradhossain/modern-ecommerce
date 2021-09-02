@@ -7,6 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -14,13 +16,14 @@ public class CustomUserDetails implements UserDetails {
 
     private final User user;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        return user.getAuthorities().stream()
-                .map((authority) ->
-                        new SimpleGrantedAuthority(authority.getName()))
-                .collect(Collectors.toList());
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        });
+        return authorities;
     }
 
     @Override
