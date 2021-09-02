@@ -32,11 +32,13 @@ public class UserService {
 
     @Transactional
     public void addUserOrAdmin(AdminUserDto adminUserDto) {
-//        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+
+        User user = new User();
+//        if (userRepository.findByUsername(adminUserDto.getUsername()).isPresent()) {
 //            log.info("Username already exists");
 //        } else {
-        User user = new User();
-        user.setUsername(adminUserDto.getUsername());
+            user.setUsername(adminUserDto.getUsername());
+//        }
         user.setPassword(passwordEncoder.encode(adminUserDto.getPassword()));
         user.setEmailAddress(adminUserDto.getEmail());
         if (adminUserDto.getRoles() != null) {
