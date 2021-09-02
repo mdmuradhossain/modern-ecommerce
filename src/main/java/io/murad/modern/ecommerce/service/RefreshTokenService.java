@@ -24,4 +24,8 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
+    public void validateRefreshToken(String token) {
+        refreshTokenRepository.findByToken(token);
+    }
+
 }
