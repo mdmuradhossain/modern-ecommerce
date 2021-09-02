@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RefreshTokenRequest;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.service.AuthService;
+import io.murad.modern.ecommerce.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.security.UnrecoverableKeyException;
 public class AuthResource {
 
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping(path = "/signup")
     public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest) {
@@ -43,5 +45,11 @@ public class AuthResource {
     public ResponseEntity<AuthenticationResponse> refreshTokens(@RequestBody RefreshTokenRequest refreshTokenRequest) throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
         AuthenticationResponse authenticationResponseFromRefreshToken = authService.refreshToken(refreshTokenRequest);
         return new ResponseEntity<>(authenticationResponseFromRefreshToken, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/logout")
+    public ResponseEntity<String> signOut(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+        return new ResponseEntity<>("Refresh token deleted successfully", HttpStatus.OK);
     }
 }
