@@ -10,6 +10,7 @@ import io.murad.modern.ecommerce.dto.AuthenticationResponse;
 import io.murad.modern.ecommerce.dto.RefreshTokenRequest;
 import io.murad.modern.ecommerce.dto.RegisterRequest;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
+import io.murad.modern.ecommerce.exception.UsernameAlreadyExistsException;
 import io.murad.modern.ecommerce.repository.RoleRepository;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.repository.VerificationTokenRepository;
@@ -65,12 +66,21 @@ public class AuthService {
 
     @Transactional
     public void register(RegisterRequest registerRequest) {
+        userRepository
+                .findByUsername(registerRequest.getUsername().toLowerCase())
+                .ifPresent(
+                        existingUser -> {
+                            throw new UsernameAlreadyExistsException("Username already Exists!");
+                        }
+                );
         User user = new User();
-        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
-            log.info("Username already exists");
-        } else {
-            user.setUsername(registerRequest.getUsername());
-        }
+//        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()){
+//            log.warn("Username already exists");
+//            throw new UsernameAlreadyExistsException("Username already Exists!");
+//        } else {
+//            user.setUsername(registerRequest.getUsername());
+//        }
+        user.setUsername(registerRequest.getUsername().toLowerCase());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmailAddress(registerRequest.getEmail());
         user.setEnable(false);
