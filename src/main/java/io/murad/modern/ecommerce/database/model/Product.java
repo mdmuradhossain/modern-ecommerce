@@ -19,7 +19,7 @@ public class Product {
     private String name;
     private double price;
 
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
+//    @Enumerated(EnumType.STRING)
+//    private Currency currency;
 
 }
