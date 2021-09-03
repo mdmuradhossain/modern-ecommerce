@@ -1,9 +1,13 @@
 package io.murad.modern.ecommerce.database.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +17,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-public class Role {
+public class Role implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +28,19 @@ public class Role {
 
     private String roleName;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
     private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(
+            name = "roles_authorities",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "authority_id", referencedColumnName = "id"))
+    private Collection<Authority> authorities;
 
     @Override
     public boolean equals(Object o) {

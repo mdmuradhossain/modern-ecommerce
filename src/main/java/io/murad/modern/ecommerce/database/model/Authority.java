@@ -4,6 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 
 @Getter
@@ -12,17 +15,21 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-public class Authority {
+public class Authority implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+    private String description;
 
-    @JoinColumn(name = "user")
-    @ManyToOne
-    private User user;
+    @ManyToMany(mappedBy = "authorities")
+    @ToString.Exclude
+    private Collection<Role> roles;
 
     @Override
     public boolean equals(Object o) {

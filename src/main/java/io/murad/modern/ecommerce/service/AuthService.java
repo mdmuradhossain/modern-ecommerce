@@ -85,7 +85,7 @@ public class AuthService {
         user.setEmailAddress(registerRequest.getEmail());
         user.setEnable(false);
         Set<Role> roles = new HashSet<>();
-        roleRepository.findByRoleName("ROLE_USER").ifPresent(roles::add);
+        roleRepository.findByRoleName("USER").ifPresent(roles::add);
         user.setRoles(roles);
         userRepository.save(user);
         log.info("User Saved..." + user.getUsername());
