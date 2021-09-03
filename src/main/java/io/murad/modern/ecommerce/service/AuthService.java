@@ -66,7 +66,11 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest registerRequest) {
         User user = new User();
-        user.setUsername(registerRequest.getUsername());
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+            log.info("Username already exists");
+        } else {
+            user.setUsername(registerRequest.getUsername());
+        }
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmailAddress(registerRequest.getEmail());
         user.setEnable(false);
@@ -74,7 +78,7 @@ public class AuthService {
         roleRepository.findByRoleName("ROLE_USER").ifPresent(roles::add);
         user.setRoles(roles);
         userRepository.save(user);
-        log.info("User Saved..."+user.getUsername());
+        log.info("User Saved..." + user.getUsername());
         String token = generateAccountVerificationToken(user);
         String emailBody = "Thank you for signing up to " + appName + ". Please click on the below url to activate your account: " + "http://localhost:8080/auth/accountVerification/" + token;
         mailService.sendMail(new NotificationEmail("Please activate your Account",
@@ -93,7 +97,7 @@ public class AuthService {
 
     public void verifyAccount(String token) {
         Optional<AccountVerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-        verificationToken.orElseThrow(()-> new ModernEcommerceException("Verification Failed"));
+        verificationToken.orElseThrow(() -> new ModernEcommerceException("Verification Failed"));
         getUserAndEnableAccount(verificationToken.get());
     }
 

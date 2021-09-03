@@ -1,8 +1,6 @@
 package io.murad.modern.ecommerce.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 //import io.murad.modern.ecommerce.database.model.CustomUserDetails;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
+import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.util.Date;

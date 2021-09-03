@@ -51,13 +51,12 @@ public class UserService {
                     .collect(Collectors.toSet());
             user.setRoles(roles);
         }
+        user.setEnable(true);
         userRepository.save(user);
-        String token = authService.generateAccountVerificationToken(user);
-        String emailBody = "Thank you for signing up Please click on the below url to activate your account: " + "http://localhost:8080/auth/accountVerification/" + token;
-        mailService.sendMail(new NotificationEmail("Please activate your Account",
-                user.getEmailAddress(), emailBody));
-
-//        }
+//        String token = authService.generateAccountVerificationToken(user);
+//        String emailBody = "Thank you for signing up Please click on the below url to activate your account: " + "http://localhost:8080/auth/accountVerification/" + token;
+//        mailService.sendMail(new NotificationEmail("Please activate your Account",
+//                user.getEmailAddress(), emailBody));
 
     }
 
