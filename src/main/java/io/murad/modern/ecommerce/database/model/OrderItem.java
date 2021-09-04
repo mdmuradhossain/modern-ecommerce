@@ -50,4 +50,9 @@ public class OrderItem {
     public int hashCode() {
         return 12332767;
     }
+
+    @Transient
+    public Double getTotalPrice() {
+        return product.getPrice() * getQuantity();
+    }
 }

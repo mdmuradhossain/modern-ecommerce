@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serial;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -21,12 +22,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    private Date createdDate;
+    private Instant createdDate;
 
     private Double totalPrice;
 
-    private String sessionId;
+//    private String sessionId;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "order_id",referencedColumnName = "id",insertable = false,updatable = false)
@@ -35,4 +35,5 @@ public class Order {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
+
 }
