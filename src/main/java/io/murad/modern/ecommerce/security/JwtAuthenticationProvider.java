@@ -2,6 +2,7 @@ package io.murad.modern.ecommerce.security;
 
 import io.jsonwebtoken.*;
 //import io.murad.modern.ecommerce.database.model.CustomUserDetails;
+import io.murad.modern.ecommerce.database.model.CustomUserDetails;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class JwtAuthenticationProvider {
 //        io.murad.modern.ecommerce.database.model.User principal = (io.murad.modern.ecommerce.database.model.User) authentication.getPrincipal();
 //        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
 //        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        UserDetails principal = (CustomUserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
