@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDto {
+public class OrderItemDto {
 
-    private Long id;
-    private Long userId;
-//    private Instant createdDate;
-//    private Double totalOrderPrice;
+    private Double price;
+    private Integer quantity;
+    private Long orderId;
+    private Long productId;
+    
 }
