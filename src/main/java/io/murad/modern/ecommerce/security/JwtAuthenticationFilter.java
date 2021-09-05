@@ -1,6 +1,7 @@
 package io.murad.modern.ecommerce.security;
 
 import io.murad.modern.ecommerce.database.model.CustomUserDetails;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +25,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String jwt = getJwtFromRequest(httpServletRequest);
 
-        if (StringUtils.hasText(jwt) && jwtAuthenticationProvider.validateJwtToken(jwt)) {
+        if (StringUtils.hasText(jwt) && jwtAuthenticationProvider.validateJwtToken(jwt,httpServletRequest)) {
             String username = jwtAuthenticationProvider.getUsernameFromJwt(jwt);
 
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,12 +84,24 @@ public class JwtAuthenticationProvider {
         }
     }
 
-    public boolean validateJwtToken(String jwt) {
+    public boolean validateJwtToken(String jwt,HttpServletRequest httpServletRequest) throws SignatureException {
+
         try {
             Jwts.parserBuilder().setSigningKey(getPublicKey()).build().parseClaimsJws(jwt);
             return true;
-        } catch (JwtException e) {
-            log.info(e.getMessage());
+        }
+//        catch (JwtException e) {
+//            log.info(e.getMessage());
+//        }
+        catch (MalformedJwtException ex){
+           log.info("Invalid JWT token."+ex.getMessage());
+        }catch (ExpiredJwtException ex){
+            log.info("Expired JWT token."+ex.getMessage());
+            httpServletRequest.setAttribute("expired",ex.getMessage());
+        }catch (UnsupportedJwtException ex){
+            log.info("Unsupported JWT exception."+ex.getMessage());
+        }catch (IllegalArgumentException ex){
+            log.info("Jwt claims string is empty."+ex.getMessage());
         }
         return false;
 //        3 ways

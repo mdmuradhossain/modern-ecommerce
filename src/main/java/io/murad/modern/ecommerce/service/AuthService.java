@@ -61,7 +61,7 @@ public class AuthService {
     private RoleRepository roleRepository;
     @Autowired
     private JwtAuthenticationProvider jwtAuthenticationProvider;
-
+    private Authentication authentication;
     @Value("${spring.application.name}")
     private String appName;
 
@@ -146,8 +146,9 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public User getCurrentUser() {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findByUsername(principal.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found " + principal.getUsername()));
+//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found " + authentication.getName()));
     }
 }
