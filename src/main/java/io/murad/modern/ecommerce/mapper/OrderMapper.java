@@ -13,12 +13,17 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class OrderMapper {
 
+
+
     @Mapping(target = "user", source = "user")
     @Mapping(target = "totalPrice", expression = "java(getTotalOrderPrice())")
     @Mapping(target = "orderItems", ignore = true)
     @Mapping(target = "id", source = "orderDto.id")
     @Mapping(target = "createdDate",expression = "java(java.time.Instant.now())")
-    public abstract Order mapToOrder(OrderDto orderDto, User user);
+    public abstract Order mapToOrder(OrderDto orderDto,User user);
+
+    @Mapping(target = "userId", expression = "java(order.getUser().getId())")
+    public abstract OrderDto mapOrderToDto(Order order);
 
     @Transient
     public Double getTotalOrderPrice() {

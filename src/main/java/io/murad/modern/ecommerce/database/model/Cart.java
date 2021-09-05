@@ -8,29 +8,32 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
+import java.time.Instant;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product implements Serializable {
+@Entity
+public class Cart implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private String name;
+    private Instant createdDate;
 
-    private Double price;
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<Cart> carts;
-//    @Enumerated(EnumType.STRING)
-//    private Currency currency;
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
 
 }
