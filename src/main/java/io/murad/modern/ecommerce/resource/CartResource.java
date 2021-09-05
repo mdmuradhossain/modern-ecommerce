@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class CartResource {
 
     @PostMapping(path = "/add")
     public ResponseEntity<?> addToCart(@RequestBody AddToCartDto addToCartDto, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         Product product = productService.getProduct(addToCartDto.getProductId());
         log.info("product to add"+  product.getName());
         cartService.addToCart(addToCartDto, product, user);
