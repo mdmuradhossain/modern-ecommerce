@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -21,7 +22,7 @@ public class Cart implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private Instant createdDate;
 
@@ -36,4 +37,9 @@ public class Cart implements Serializable {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
+    public Cart(Product product, Integer quantity, User user) {
+        this.product = product;
+        this.quantity = quantity;
+        this.user = user;
+    }
 }
