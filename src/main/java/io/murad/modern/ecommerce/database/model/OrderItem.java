@@ -16,7 +16,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class OrderItem implements Serializable {
 
     @Serial
@@ -35,7 +34,7 @@ public class OrderItem implements Serializable {
     private Date createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
     private Order order;
 
     @OneToOne

@@ -1,6 +1,7 @@
 package io.murad.modern.ecommerce.database.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.murad.modern.ecommerce.dto.PlaceOrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "product_order")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order implements Serializable {
@@ -31,13 +33,18 @@ public class Order implements Serializable {
 
     private String sessionId;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "order_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    public Order(PlaceOrderDto orderDto, User user, String sessionID) {
+        this.user = user;
+        this.createdDate = Instant.now();
+        this.totalPrice = orderDto.getTotalPrice();
+        this.sessionId = sessionId;
+    }
 }

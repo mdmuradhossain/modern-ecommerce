@@ -27,6 +27,9 @@ public class Product implements Serializable {
 
     private Double price;
 
+    @OneToOne(mappedBy="product")
+    private OrderItem orderItem;
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Cart> carts;

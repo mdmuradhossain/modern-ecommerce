@@ -1,5 +1,6 @@
 package io.murad.modern.ecommerce.database.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,6 +41,11 @@ public class User implements Serializable {
     private String emailAddress;
 
     private boolean enable;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY)
+    private List<Order> orders;
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
