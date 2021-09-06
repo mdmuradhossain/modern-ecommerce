@@ -2,6 +2,7 @@ package io.murad.modern.ecommerce.resource;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
+import io.murad.modern.ecommerce.database.model.Order;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.CheckoutItemDto;
 import io.murad.modern.ecommerce.dto.StripeResponse;
@@ -35,6 +36,14 @@ public class OrderResource {
     public ResponseEntity<StripeResponse> checkoutList(@RequestBody List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
         Session session = orderService.createSession(checkoutItemDtoList);
         StripeResponse stripeResponse = new StripeResponse(session.getId());
-        return new ResponseEntity<StripeResponse>(stripeResponse,HttpStatus.OK);
+        return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Order>> getAllOrders() {
+
+        User user = authService.getCurrentUser();
+        List<Order> orderDtoList = orderService.listOrders(user);
+        return new ResponseEntity<List<Order>>(orderDtoList, HttpStatus.OK);
     }
 }

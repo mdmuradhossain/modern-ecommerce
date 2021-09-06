@@ -17,6 +17,7 @@ import io.murad.modern.ecommerce.repository.CartRepository;
 import io.murad.modern.ecommerce.repository.OrderItemRepository;
 import io.murad.modern.ecommerce.repository.OrderRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,21 +27,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 @Transactional
 public class OrderService {
 
-    private final OrderRepository orderRepository;
-    private final CartRepository cartRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final CartService cartService;
-    private final OrderItemService orderItemService;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private  OrderItemService orderItemService;
 
-    @Value("${baseUrl}")
-    private final String baseUrl;
+    private String baseUrl = "http://localhost:8080/";
 
     @Value("${STRIPE_SECRET_KEY}")
-    private final String apiKey;
+    private String apiKey;
+
 
     public Order saveOrder(PlaceOrderDto orderDto, User user, String sessionID) {
         Order order = getOrderFromDto(orderDto, user, sessionID);
@@ -48,8 +53,7 @@ public class OrderService {
     }
 
     private Order getOrderFromDto(PlaceOrderDto orderDto, User user, String sessionID) {
-        Order order = new Order(orderDto, user, sessionID);
-        return order;
+        return new Order(orderDto, user, sessionID);
     }
 
     public List<Order> listOrders(User user) {
@@ -106,8 +110,8 @@ public class OrderService {
 
     public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
 
-        String successUrl = baseUrl + "/payment/success";
-        String failureUrl = baseUrl + "/payment/failure";
+        String successUrl = baseUrl + "payment/success";
+        String failureUrl = baseUrl + "payment/failure";
 
         Stripe.apiKey = apiKey;
 
