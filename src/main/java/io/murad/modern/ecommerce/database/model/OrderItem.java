@@ -41,6 +41,13 @@ public class OrderItem implements Serializable {
     @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Product product;
 
+    public OrderItem(Order newOrder, Product product, Integer quantity, Double price) {
+        this.order = newOrder;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -46,4 +46,8 @@ public class CartService {
         CartItemDto cartItemDto = new CartItemDto(cart);
         return cartItemDto;
     }
+
+    public void deleteUserCartItem(User user) {
+        cartRepository.deleteByUser(user);
+    }
 }
