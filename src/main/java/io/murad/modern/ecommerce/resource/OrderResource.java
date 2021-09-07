@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/orders")
-@AllArgsConstructor
 public class OrderResource {
 
     private final OrderService orderService;
