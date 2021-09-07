@@ -16,5 +16,5 @@ public interface CategoryMapper {
     @Mapping(target = "name",source="category.categoryName")
     @Mapping(target = "description",source="category.description")
     @Mapping(target="products",ignore = true)
-    public CategoryDto mapDtoToCategory(Category category);
+    public CategoryDto mapCategoryToDto(Category category);
 }
