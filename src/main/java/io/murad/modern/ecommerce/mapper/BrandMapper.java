@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public abstract class BrandMapper {
 
 
