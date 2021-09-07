@@ -37,7 +37,8 @@ public class Product implements Serializable {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Cart> carts;
-//    @Enumerated(EnumType.STRING)
-//    private Currency currency;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
 }

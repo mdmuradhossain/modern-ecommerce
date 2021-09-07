@@ -12,4 +12,5 @@ public class ProductRequest {
     private Long id;
     private String name;
     private String price;
+    private String categoryName;
 }
