@@ -38,8 +38,17 @@ public class CategoryService {
                 .map(categoryMapper::mapCategoryToDto).collect(Collectors.toList());
     }
 
+    public void updateCategory(Long id,CategoryDto categoryDto) {
+        Category category = categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException("Category Not found"));
+        category.setCategoryName(categoryDto.getName());
+        category.setDescription(categoryDto.getDescription());
+        categoryRepository.save(category);
+    }
+
     public void deleteCategory(Long id) {
         log.info("Category Removed");
         categoryRepository.deleteById(id);
     }
+
+
 }

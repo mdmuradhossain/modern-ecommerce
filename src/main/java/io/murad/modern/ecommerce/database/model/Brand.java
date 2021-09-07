@@ -5,31 +5,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category implements Serializable {
-
+public class Brand implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String categoryName;
+    private String brandName;
+
+    private String brandLogo;
 
     @Lob
-    private String description;
-
-    @OneToMany(mappedBy="category")
-    private List<Product> products;
-
+    private String brandDescription;
 }
