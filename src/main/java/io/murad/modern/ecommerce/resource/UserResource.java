@@ -23,8 +23,20 @@ public class UserResource {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+    }
+
+
     @GetMapping()
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> removeUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>("User Removed.", HttpStatus.OK);
     }
 }
