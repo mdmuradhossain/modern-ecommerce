@@ -26,6 +26,5 @@ public class SubCategory implements Serializable {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="sub_category_id",referencedColumnName="id")
     private Category category;
 }
