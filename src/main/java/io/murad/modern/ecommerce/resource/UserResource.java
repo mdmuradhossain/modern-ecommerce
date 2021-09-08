@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.dto.AdminUserDto;
 import io.murad.modern.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,8 @@ public class UserResource {
 
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody AdminUserDto adminUserDto) {
         userService.addUserOrAdmin(adminUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

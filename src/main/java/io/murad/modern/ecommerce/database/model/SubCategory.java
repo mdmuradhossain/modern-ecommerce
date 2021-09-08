@@ -25,6 +25,6 @@ public class SubCategory implements Serializable {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne()
     private Category category;
 }

@@ -34,7 +34,7 @@ public class Category implements Serializable {
     private List<Product> products;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="sub_category_id",referencedColumnName="id")
     private List<SubCategory> subcategories;
 

@@ -4,6 +4,7 @@ import io.murad.modern.ecommerce.database.model.NotificationEmail;
 import io.murad.modern.ecommerce.database.model.Role;
 import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AdminUserDto;
+import io.murad.modern.ecommerce.exception.UsernameAlreadyExistsException;
 import io.murad.modern.ecommerce.repository.RoleRepository;
 import io.murad.modern.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -32,10 +33,10 @@ public class UserService {
 
     @Transactional
     public void addUserOrAdmin(AdminUserDto adminUserDto) {
-
         User user = new User();
         if (userRepository.findByUsername(adminUserDto.getUsername()).isPresent()) {
             log.info("Username already exists");
+            throw new UsernameAlreadyExistsException("Username Already exist.");
         } else {
             user.setUsername(adminUserDto.getUsername());
         }

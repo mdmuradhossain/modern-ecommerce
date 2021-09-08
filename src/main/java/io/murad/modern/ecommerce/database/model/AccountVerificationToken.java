@@ -19,7 +19,7 @@ public class AccountVerificationToken {
 
     private String token;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy="accountVerificationToken")
     private User user;
 
     private Instant expireDateTime;

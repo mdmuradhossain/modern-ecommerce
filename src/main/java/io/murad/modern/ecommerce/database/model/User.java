@@ -42,12 +42,17 @@ public class User implements Serializable {
 
     private boolean enable;
 
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private AccountVerificationToken accountVerificationToken;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY)
     private List<Order> orders;
 
     @JsonManagedReference
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {
