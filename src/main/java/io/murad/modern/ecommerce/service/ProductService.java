@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.database.model.Product;
 import io.murad.modern.ecommerce.dto.ProductRequest;
 import io.murad.modern.ecommerce.dto.ProductResponse;
 import io.murad.modern.ecommerce.exception.ModernEcommerceException;
+import io.murad.modern.ecommerce.exception.ProductNotFoundException;
 import io.murad.modern.ecommerce.mapper.ProductMapper;
 import io.murad.modern.ecommerce.repository.CategoryRepository;
 import io.murad.modern.ecommerce.repository.ProductRepository;
@@ -34,6 +35,6 @@ public class ProductService {
     }
 
     public Product getProduct(Long id){
-        return productRepository.findById(id).orElseThrow(()-> new ModernEcommerceException("Product not found"));
+        return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product not found"));
     }
 }
