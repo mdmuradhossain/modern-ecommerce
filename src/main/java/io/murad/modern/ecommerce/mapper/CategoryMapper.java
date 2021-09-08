@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface CategoryMapper {
 
 
+    @Mapping(target = "subcategories", ignore = true)
     @Mapping(target = "products",ignore = true)
     @Mapping(target = "categoryName", source = "categoryDto.name")
     public Category mapToCategory(CategoryDto categoryDto);
@@ -18,6 +19,5 @@ public interface CategoryMapper {
     @Mapping(target = "id",source="category.id")
     @Mapping(target = "name",source="category.categoryName")
     @Mapping(target = "description",source="category.description")
-    @Mapping(target = "products",ignore=true)
     public CategoryDto mapCategoryToDto(Category category);
 }

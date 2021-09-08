@@ -10,7 +10,9 @@ import org.mapstruct.Mapping;
 public interface SubCategoryMapper {
 
 
+    @Mapping(target = "id",source="subCategoryDto.id")
     @Mapping(target = "subCategoryName", source = "subCategoryDto.name")
+    @Mapping(target = "description",source = "subCategoryDto.description")
     @Mapping(target = "category",source = "category")
     public SubCategory mapToSubCategory(SubCategoryDto subCategoryDto, Category category);
 
