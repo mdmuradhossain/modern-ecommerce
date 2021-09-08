@@ -34,11 +34,11 @@ public class UserService {
     public void addUserOrAdmin(AdminUserDto adminUserDto) {
 
         User user = new User();
-//        if (userRepository.findByUsername(adminUserDto.getUsername()).isPresent()) {
-//            log.info("Username already exists");
-//        } else {
+        if (userRepository.findByUsername(adminUserDto.getUsername()).isPresent()) {
+            log.info("Username already exists");
+        } else {
             user.setUsername(adminUserDto.getUsername());
-//        }
+        }
         user.setPassword(passwordEncoder.encode(adminUserDto.getPassword()));
         user.setEmailAddress(adminUserDto.getEmail());
         if (adminUserDto.getRoles() != null) {
@@ -66,5 +66,10 @@ public class UserService {
 
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+        log.info("User deleted...");
     }
 }
