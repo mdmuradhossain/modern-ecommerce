@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
-    @Mapping(target = "products",ignore=true)
+
+    @Mapping(target = "products",ignore = true)
     @Mapping(target = "categoryName", source = "categoryDto.name")
     public Category mapToCategory(CategoryDto categoryDto);
 
@@ -17,5 +18,6 @@ public interface CategoryMapper {
     @Mapping(target = "id",source="category.id")
     @Mapping(target = "name",source="category.categoryName")
     @Mapping(target = "description",source="category.description")
+    @Mapping(target = "products",ignore=true)
     public CategoryDto mapCategoryToDto(Category category);
 }
