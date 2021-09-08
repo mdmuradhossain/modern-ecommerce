@@ -3,12 +3,14 @@ package io.murad.modern.ecommerce.config;
 import io.murad.modern.ecommerce.security.JwtAuthenticationFilter;
 import io.murad.modern.ecommerce.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 //                .formLogin()
 //                .defaultSuccessUrl("/hello", true);
+//        http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests((requests) ->
+//                requests.anyRequest().permitAll());
         http.authorizeRequests()
                 .mvcMatchers("/auth/**").permitAll()
                 .anyRequest()
@@ -40,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
