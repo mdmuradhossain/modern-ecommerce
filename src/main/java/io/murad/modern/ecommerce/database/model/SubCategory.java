@@ -1,22 +1,19 @@
 package io.murad.modern.ecommerce.database.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 @Data
-@Entity
+@Entity()
+@Table(name = "sub_category")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category implements Serializable {
-
+public class SubCategory implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -24,18 +21,11 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String categoryName;
+    private String subCategoryName;
 
-    @Lob
     private String description;
 
-    @OneToMany(mappedBy="category")
-    private List<Product> products;
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "category")
-    private List<SubCategory> subcategories;
-
-
+    @ManyToOne
+    @JoinColumn(name="sub_category_id",referencedColumnName="id")
+    private Category category;
 }
