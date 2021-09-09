@@ -52,7 +52,11 @@ public class ProductService {
                 .map(productMapper::mapToProductDto).collect(Collectors.toList());
     }
 
-    public ProductResponse getProduct(Long id) {
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    }
+
+    public ProductResponse getProductResponse(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
         return productMapper.mapToProductDto(product);
     }

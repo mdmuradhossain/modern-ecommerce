@@ -30,4 +30,9 @@ public class ProductResource {
         List<ProductResponse> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(productService.getProductResponse(id), HttpStatus.OK);
+    }
 }
