@@ -33,7 +33,7 @@ public class CartResource {
         User user = userRepository.findByUsername(authentication.getName()).get();
 //        User user = authService.getCurrentUser();
         Product product = productService.getProduct(addToCartDto.getProductId());
-        log.info("product to add"+  product.getName());
+        log.info("product to add"+  product.getProductName());
         cartService.addToCart(addToCartDto, product, user);
         return new ResponseEntity<>(HttpStatus.CREATED);
 

@@ -83,7 +83,7 @@ public class OrderService {
                     newOrder,
                     cartItemDto.getProduct(),
                     cartItemDto.getQuantity(),
-                    cartItemDto.getProduct().getPrice()
+                    cartItemDto.getProduct().getProductPrice()
             );
             orderItemService.addOrderedProducts(orderItem);
         }

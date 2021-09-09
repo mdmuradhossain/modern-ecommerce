@@ -35,7 +35,7 @@ public class CartService {
         }
         double totalCost = 0;
         for (CartItemDto cartItemDto :cartItems){
-            totalCost += (cartItemDto.getProduct().getPrice()* cartItemDto.getQuantity());
+            totalCost += (cartItemDto.getProduct().getProductPrice()* cartItemDto.getQuantity());
         }
         CartDto cartDto = new CartDto(cartItems,totalCost);
         return cartDto;

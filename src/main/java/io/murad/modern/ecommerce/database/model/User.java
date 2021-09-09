@@ -44,7 +44,7 @@ public class User implements Serializable {
 
     private boolean enable;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private AccountVerificationToken accountVerificationToken;
 
