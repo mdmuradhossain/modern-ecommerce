@@ -52,8 +52,9 @@ public class ProductService {
                 .map(productMapper::mapToProductDto).collect(Collectors.toList());
     }
 
-    public Product getProduct(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    public ProductResponse getProduct(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        return productMapper.mapToProductDto(product);
     }
 
     public String provideFileDownloadUrlFromMultipart(MultipartFile file) throws FileStorageException {
