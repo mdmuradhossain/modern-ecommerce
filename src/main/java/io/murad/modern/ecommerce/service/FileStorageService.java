@@ -1,8 +1,10 @@
 package io.murad.modern.ecommerce.service;
 
 import io.murad.modern.ecommerce.exception.FileStorageException;
+import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import io.murad.modern.ecommerce.util.FileStorageProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,9 @@ import java.util.Objects;
 @Service
 public class FileStorageService {
 
-    private Path fileStorageLocation;
+    private final Path fileStorageLocation;
 
+    @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) throws FileStorageException {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getFileUploadLocation());
 

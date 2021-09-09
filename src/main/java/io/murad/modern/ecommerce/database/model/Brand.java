@@ -15,7 +15,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Brand implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

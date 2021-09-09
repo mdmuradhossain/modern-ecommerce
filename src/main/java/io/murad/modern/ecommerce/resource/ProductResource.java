@@ -2,6 +2,7 @@ package io.murad.modern.ecommerce.resource;
 
 import io.murad.modern.ecommerce.dto.ProductRequest;
 import io.murad.modern.ecommerce.dto.ProductResponse;
+import io.murad.modern.ecommerce.exception.FileStorageException;
 import io.murad.modern.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class ProductResource {
     private final ProductService productService;
 
     @PostMapping()
-    public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<?> createProduct(@RequestBody ProductRequest productRequest) throws FileStorageException {
         productService.addProduct(productRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
