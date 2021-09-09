@@ -17,5 +17,7 @@ public interface ProductMapper {
     @Mapping(target = "brand",source = "brand")
     public Product mapToProduct(ProductRequest productRequest, Category category, Brand brand);
 
+    @Mapping(target = "price", source = "product.productPrice")
+    @Mapping(target = "name", source = "product.productName")
     public ProductResponse mapToProductDto(Product product);
 }

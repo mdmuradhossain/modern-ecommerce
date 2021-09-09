@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductResponse {
 
+    private Long id;
+    private String code;
     private String name;
+    private String description;
     private String price;
+    private Integer stock;
+    private Boolean bestseller;
 }
