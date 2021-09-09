@@ -24,6 +24,8 @@ public class Brand implements Serializable {
 
     private String brandLogo;
 
+    private String brandUrl;
+
     @Lob
     private String brandDescription;
 }
