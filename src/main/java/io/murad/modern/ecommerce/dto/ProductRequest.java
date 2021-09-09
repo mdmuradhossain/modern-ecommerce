@@ -15,6 +15,7 @@ public class ProductRequest {
     private String price;
     private String description;
     private Integer stock;
+    private Boolean bestseller;
     private String categoryName;
     private String brandName;
 }
