@@ -11,9 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -40,6 +38,10 @@ public class User implements Serializable {
     @NotBlank(message = "Email is required")
     private String emailAddress;
 
+    private String fullName;
+
+    private String phoneNumber;
+
     private boolean enable;
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -49,6 +51,7 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Order> orders;
 
     @JsonManagedReference
