@@ -64,6 +64,6 @@ public class OrderItem implements Serializable {
 
     @Transient
     public Double getTotalPrice() {
-        return product.getPrice() * getQuantity();
+        return product.getProductPrice() * getQuantity();
     }
 }

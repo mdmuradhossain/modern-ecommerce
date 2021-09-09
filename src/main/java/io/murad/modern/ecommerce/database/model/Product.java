@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -23,15 +24,31 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String productCode;
 
-    private Double price;
+    @NotEmpty
+    private String productName;
+
+    @NotEmpty
+    private Double productPrice;
+
+    @NotEmpty
+    @Lob
+    private String productDescription;
+
+    private Integer stock;
+
+    private boolean bestseller;
+
+    private String productImageUrl;
+
+    private String productVideoUrl;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @OneToOne(mappedBy="product")
+    @OneToOne(mappedBy = "product")
     private OrderItem orderItem;
 
     @JsonIgnore
