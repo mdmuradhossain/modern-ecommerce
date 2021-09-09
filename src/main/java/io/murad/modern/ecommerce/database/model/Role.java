@@ -28,6 +28,9 @@ public class Role implements Serializable {
 
     private String roleName;
 
+    @Lob
+    private String description;
+
     @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
@@ -40,6 +43,7 @@ public class Role implements Serializable {
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "authority_id", referencedColumnName = "id"))
+    @ToString.Exclude
     private Collection<Authority> authorities;
 
     @Override
