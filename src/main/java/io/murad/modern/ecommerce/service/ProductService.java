@@ -6,13 +6,13 @@ import io.murad.modern.ecommerce.database.model.Product;
 import io.murad.modern.ecommerce.dto.ProductRequest;
 import io.murad.modern.ecommerce.dto.ProductResponse;
 import io.murad.modern.ecommerce.exception.FileStorageException;
-import io.murad.modern.ecommerce.exception.ModernEcommerceException;
 import io.murad.modern.ecommerce.exception.ProductNotFoundException;
 import io.murad.modern.ecommerce.mapper.ProductMapper;
 import io.murad.modern.ecommerce.repository.BrandRepository;
 import io.murad.modern.ecommerce.repository.CategoryRepository;
 import io.murad.modern.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,14 +35,15 @@ public class ProductService {
         Brand brand = brandRepository.findByBrandName(productRequest.getBrandName());
 //        productRepository.save(productMapper.mapToProduct(productRequest,category,brand));
         Product product = new Product();
-        product.setProductCode(productRequest.getCode());
+        product.setProductCode(RandomStringUtils.randomAlphanumeric(4));
         product.setProductName(productRequest.getName());
         product.setProductDescription(productRequest.getDescription());
         product.setProductPrice(productRequest.getPrice());
+        product.setStock(productRequest.getStock());
         product.setBestseller(productRequest.getBestseller());
         product.setCategory(category);
         product.setBrand(brand);
-        product.setProductImageUrl(provideFileDownloadUrlFromMultipart(productRequest.getFile()));
+//        product.setProductImageUrl(provideFileDownloadUrlFromMultipart(productRequest.getFile()));
         productRepository.save(product);
     }
 

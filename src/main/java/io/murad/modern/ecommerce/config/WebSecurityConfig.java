@@ -27,6 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoderImpl passwordEncoder;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private static final String[] SWAGGER_URL = {
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui/",
+            "/swagger-ui",
+            "/swagger-ui-custom/**",
+            "/swagger-ui-custom/",
+            "/swagger-ui-custom",
+            "/swagger-ui-custom.html"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -36,6 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                requests.anyRequest().permitAll());
         http.authorizeRequests()
                 .mvcMatchers("/auth/**").permitAll()
+                .and()
+                .authorizeRequests()
+                .mvcMatchers(SWAGGER_URL).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

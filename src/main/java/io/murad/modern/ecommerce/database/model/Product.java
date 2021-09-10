@@ -1,20 +1,23 @@
 package io.murad.modern.ecommerce.database.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 public class Product implements Serializable {
 
     @Serial
@@ -26,13 +29,10 @@ public class Product implements Serializable {
 
     private String productCode;
 
-    @NotEmpty
     private String productName;
 
-    @NotEmpty
     private Double productPrice;
 
-    @NotEmpty
     @Lob
     private String productDescription;
 
@@ -41,8 +41,6 @@ public class Product implements Serializable {
     private boolean bestseller;
 
     private String productImageUrl;
-
-    private String productVideoUrl;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -57,9 +55,23 @@ public class Product implements Serializable {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @ToString.Exclude
     private List<Cart> carts;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Product product = (Product) o;
+
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 2042274511;
+    }
 }

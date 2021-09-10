@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductRequest {
 
     private Long id;
-    private String code;
     private String name;
     private Double price;
     private String description;
@@ -19,5 +18,5 @@ public class ProductRequest {
     private Boolean bestseller;
     private String categoryName;
     private String brandName;
-    private MultipartFile file;
+//    private MultipartFile file;
 }

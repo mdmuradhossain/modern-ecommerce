@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring")
 public abstract class BrandMapper {
@@ -26,7 +27,7 @@ public abstract class BrandMapper {
 
     public String getFile(MultipartFile file) throws IOException {
         Brand brand = new Brand();
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         brand.setBrandLogo(fileName);
 
         Path uploadPath = Paths.get("uploads/");

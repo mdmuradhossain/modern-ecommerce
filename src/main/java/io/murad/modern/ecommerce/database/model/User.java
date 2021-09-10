@@ -44,18 +44,13 @@ public class User implements Serializable {
 
     private boolean enable;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @PrimaryKeyJoinColumn
-    private AccountVerificationToken accountVerificationToken;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Order> orders;
 
     @JsonManagedReference
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {
@@ -64,6 +59,10 @@ public class User implements Serializable {
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id") })
     private Set<Role> roles;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_verification_token_id")
+    private AccountVerificationToken accountVerificationToken;
 
     @Override
     public boolean equals(Object o) {

@@ -19,10 +19,8 @@ public class AccountVerificationToken {
 
     private String token;
 
-    @OneToOne(mappedBy="accountVerificationToken")
-    private User user;
-
     private Instant expireDateTime;
 
-
+    @OneToOne
+    private User user;
 }
