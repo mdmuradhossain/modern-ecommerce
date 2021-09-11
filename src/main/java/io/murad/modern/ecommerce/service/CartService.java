@@ -43,8 +43,7 @@ public class CartService {
 
 
     public static CartItemDto getDtoFromCart(Cart cart) {
-        CartItemDto cartItemDto = new CartItemDto(cart);
-        return cartItemDto;
+        return new CartItemDto(cart);
     }
 
     public void deleteUserCartItem(User user) {
