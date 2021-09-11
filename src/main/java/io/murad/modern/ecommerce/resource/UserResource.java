@@ -36,6 +36,12 @@ public class UserResource {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> editUser(@PathVariable("id") Long id, @RequestBody AdminUserDto adminUserDto) {
+        userService.updateUserOrAdmin(id, adminUserDto);
+        return new ResponseEntity<>("User Updated", HttpStatus.CREATED);
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> removeUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
