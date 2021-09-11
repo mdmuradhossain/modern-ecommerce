@@ -44,4 +44,9 @@ public abstract class BrandMapper {
         }
         return fileName;
     }
+
+    @Mapping(target = "name", source = "brand.brandName")
+    @Mapping(target = "logo", source = "brand.brandLogo")
+    @Mapping(target = "description", source = "brand.brandDescription")
+    public abstract BrandDto mapToBrandDto(Brand brand);
 }
