@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/roles")
 @AllArgsConstructor
@@ -24,5 +26,22 @@ public class RoleResource {
     public ResponseEntity<Role> getRole(@PathVariable Long id) {
         Role role = roleService.getRole(id);
         return new ResponseEntity<Role>(role, HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Role>> getRoles() {
+        return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> editRole(@PathVariable("id") Long id, @RequestBody Role role) {
+        roleService.updateRole(id, role);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> removeRole(@PathVariable("id") Long id) {
+        roleService.deleteRole(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

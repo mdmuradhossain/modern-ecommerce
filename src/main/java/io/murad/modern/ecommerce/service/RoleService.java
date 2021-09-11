@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -23,6 +25,10 @@ public class RoleService {
         return roleRepository.findById(id).orElseThrow(() -> new ModernEcommerceException("Role not found"));
     }
 
+    public List<Role> getRoles() {
+        return roleRepository.findAll();
+    }
+
     public void updateRole(Long id, Role role) {
         Role exitingRole = roleRepository.findById(id).orElseThrow(() -> new ModernEcommerceException("Role Not found"));
         exitingRole.setRoleName(role.getRoleName());
@@ -33,4 +39,5 @@ public class RoleService {
     public void deleteRole(Long id) {
         roleRepository.deleteById(id);
     }
+
 }
