@@ -61,13 +61,38 @@ public class UserService {
 
     }
 
-    
+
     public User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public void updateUserOrAdmin(Long id, AdminUserDto adminUserDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (user.getUsername().equals(adminUserDto.getUsername())) {
+            log.info("Username already exists");
+            throw new UsernameAlreadyExistsException("Username Already exist.");
+        } else {
+            user.setUsername(adminUserDto.getUsername());
+        }
+        user.setPassword(passwordEncoder.encode(adminUserDto.getPassword()));
+        user.setEmailAddress(adminUserDto.getEmail());
+        if (adminUserDto.getRoles() != null) {
+            Set<Role> roles = adminUserDto
+                    .getRoles()
+                    .stream()
+                    .map((role -> roleRepository.findByRoleName(role.getRoleName())))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
+        }
+        user.setEnable(true);
+        userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
