@@ -19,7 +19,18 @@ public class RoleService {
         roleRepository.save(role);
     }
 
-    public Role getRole(Long id){
-        return roleRepository.findById(id).orElseThrow(()->new ModernEcommerceException("Role not found"));
+    public Role getRole(Long id) {
+        return roleRepository.findById(id).orElseThrow(() -> new ModernEcommerceException("Role not found"));
+    }
+
+    public void updateRole(Long id, Role role) {
+        Role exitingRole = roleRepository.findById(id).orElseThrow(() -> new ModernEcommerceException("Role Not found"));
+        exitingRole.setRoleName(role.getRoleName());
+        exitingRole.setDescription(role.getDescription());
+        roleRepository.save(exitingRole);
+    }
+
+    public void deleteRole(Long id) {
+        roleRepository.deleteById(id);
     }
 }
