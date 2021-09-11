@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 public class AuthorityService {
     private final AuthorityRepository authorityRepository;
 
-    @PostConstruct
     public void saveAuthority() {
         Authority authorityWrite = new Authority();
         authorityWrite.setName("WRITE_AUTHORITY");
