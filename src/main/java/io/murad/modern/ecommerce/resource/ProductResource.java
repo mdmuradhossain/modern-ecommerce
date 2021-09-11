@@ -35,4 +35,16 @@ public class ProductResource {
     public ResponseEntity<ProductResponse> getProduct(@PathVariable("id") Long id) {
         return new ResponseEntity<>(productService.getProductResponse(id), HttpStatus.OK);
     }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> editProduct(@PathVariable("id") Long id, @RequestBody ProductRequest productRequest) {
+        productService.updateProduct(id, productRequest);
+        return new ResponseEntity<>("Product Edited", HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> removeProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>("Product Removed.",HttpStatus.OK);
+    }
 }
