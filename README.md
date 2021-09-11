@@ -1,4 +1,5 @@
 # Modern Ecommerce
+
 ## Modern Ecommerce Web Application
 ---
 ### Technology and Tools Used
@@ -22,7 +23,17 @@
 - `mvn spring-boot:run`
 ---
 ### Features
-
+- [x] Sign Up and Sign In System 
+- [x] Admin and User system
+- [x] Add Admin and Role and Privilege
+- [x] Manage Products from Admin
+- [x] Manage Category from Admin
+- [x] Manage SubCategory from Admin
+- [x] Manage Brand from Admin
+- [x] Manage Orders
+- [x] Manage Carts
+- [x] Manage Order Item
+- [x] Stripe Payment System
 ---
 
 ### Swagger UI
