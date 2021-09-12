@@ -64,6 +64,9 @@ public class User implements Serializable {
     @JoinColumn(name = "account_verification_token_id")
     private AccountVerificationToken accountVerificationToken;
 
+    @OneToOne(mappedBy="user")
+    private Address address;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
