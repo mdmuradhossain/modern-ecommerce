@@ -4,6 +4,7 @@ import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AdminUserDto;
 import io.murad.modern.ecommerce.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,14 @@ public class UserResource {
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "User",key = "#id")
     public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
 
     @GetMapping()
+    @Cacheable(value = "Users")
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }

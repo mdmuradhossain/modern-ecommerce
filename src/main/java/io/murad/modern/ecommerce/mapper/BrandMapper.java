@@ -20,9 +20,8 @@ public abstract class BrandMapper {
 
 
     @Mapping(target = "brandName", source = "brandDto.name")
-    @Mapping(target = "brandLogo", expression = "java(getFile(file))")
     @Mapping(target = "brandDescription", source = "brandDto.description")
-    public abstract Brand mapToBrand(BrandDto brandDto,MultipartFile file) throws IOException;
+    public abstract Brand mapToBrand(BrandDto brandDto);
 
 
     public String getFile(MultipartFile file) throws IOException {

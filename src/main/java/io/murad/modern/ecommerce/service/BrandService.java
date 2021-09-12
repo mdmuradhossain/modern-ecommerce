@@ -22,13 +22,14 @@ public class BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
-    public void addBrand(BrandDto brandDto, MultipartFile file) throws IOException {
-        brandRepository.save(brandMapper.mapToBrand(brandDto, file));
+    public void addBrand(BrandDto brandDto) throws IOException {
+        brandRepository.save(brandMapper.mapToBrand(brandDto));
     }
 
     public BrandDto getBrand(Long id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException("Brand Not found"));
         log.info("Brand: "+brand.getBrandName());
+        log.info("Brand from db");
         return brandMapper.mapToBrandDto(brand);
     }
 

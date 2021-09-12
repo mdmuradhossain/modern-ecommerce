@@ -3,6 +3,7 @@ package io.murad.modern.ecommerce.resource;
 import io.murad.modern.ecommerce.database.model.Role;
 import io.murad.modern.ecommerce.service.RoleService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,14 @@ public class RoleResource {
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "Role",key = "#id")
     public ResponseEntity<Role> getRole(@PathVariable Long id) {
         Role role = roleService.getRole(id);
         return new ResponseEntity<Role>(role, HttpStatus.OK);
     }
 
     @GetMapping()
+    @Cacheable(value = "Roles")
     public ResponseEntity<List<Role>> getRoles() {
         return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
     }

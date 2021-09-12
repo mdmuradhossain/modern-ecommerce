@@ -5,6 +5,7 @@ import io.murad.modern.ecommerce.dto.ProductResponse;
 import io.murad.modern.ecommerce.exception.FileStorageException;
 import io.murad.modern.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,14 @@ public class ProductResource {
     }
 
     @GetMapping()
+    @Cacheable(value = "Products")
     public ResponseEntity<List<ProductResponse>> getProducts() {
         List<ProductResponse> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "Product",key = "#id")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable("id") Long id) {
         return new ResponseEntity<>(productService.getProductResponse(id), HttpStatus.OK);
     }

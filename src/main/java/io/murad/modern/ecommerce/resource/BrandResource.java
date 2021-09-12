@@ -4,6 +4,7 @@ import io.murad.modern.ecommerce.dto.BrandDto;
 import io.murad.modern.ecommerce.service.BrandService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +22,20 @@ public class BrandResource {
     private final BrandService brandService;
 
     @PostMapping()
-    public ResponseEntity<?> createBrand(@RequestBody BrandDto brandDto, @RequestParam("file") MultipartFile file) throws IOException {
-        brandService.addBrand(brandDto, file);
+    public ResponseEntity<?> createBrand(@RequestBody BrandDto brandDto) throws IOException {
+        brandService.addBrand(brandDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "Brand",key = "#id")
     public ResponseEntity<BrandDto> getBrand(@PathVariable("id") Long id) {
         BrandDto brandDto = brandService.getBrand(id);
         return new ResponseEntity<>(brandDto, HttpStatus.OK);
     }
 
     @GetMapping()
+    @Cacheable(value = "Brands")
     public ResponseEntity<List<BrandDto>> allBrands() {
         return new ResponseEntity<>(brandService.getBrands(), HttpStatus.OK);
     }

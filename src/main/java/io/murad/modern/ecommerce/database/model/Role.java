@@ -1,6 +1,7 @@
 package io.murad.modern.ecommerce.database.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -36,6 +37,7 @@ public class Role implements Serializable {
     @ToString.Exclude
     private Set<User> users;
 
+    @JsonManagedReference
     @ManyToMany
     @JoinTable(
             name = "roles_authorities",

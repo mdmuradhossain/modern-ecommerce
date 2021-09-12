@@ -3,6 +3,7 @@ package io.murad.modern.ecommerce.resource;
 import io.murad.modern.ecommerce.dto.SubCategoryDto;
 import io.murad.modern.ecommerce.service.SubCategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,13 @@ public class SubCategoryResource {
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "SubCategory",key = "#id")
     public ResponseEntity<SubCategoryDto> getSubCategory(@PathVariable("id") Long id) {
         return new ResponseEntity<>(subCategoryService.getSubCategory(id), HttpStatus.OK);
     }
 
     @GetMapping()
+    @Cacheable(value = "SubCategories")
     public ResponseEntity<List<SubCategoryDto>> getSubCategories() {
         return new ResponseEntity<>(subCategoryService.getAllSubCategories(), HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package io.murad.modern.ecommerce.database.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -27,6 +28,7 @@ public class Authority implements Serializable {
     private String name;
     private String description;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "authorities")
     @ToString.Exclude
     private Collection<Role> roles;

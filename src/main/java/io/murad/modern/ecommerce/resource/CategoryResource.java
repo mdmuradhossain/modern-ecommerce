@@ -4,6 +4,7 @@ import io.murad.modern.ecommerce.dto.CategoryDto;
 import io.murad.modern.ecommerce.service.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,14 @@ public class CategoryResource {
     }
 
     @GetMapping(path = "/{id}")
+    @Cacheable(value = "Category",key = "#id")
     public ResponseEntity<CategoryDto> getCategory(@PathVariable("id") Long id) {
         CategoryDto categoryDto = categoryService.getCategory(id);
         return new ResponseEntity<>(categoryDto, HttpStatus.OK);
     }
 
     @GetMapping()
+    @Cacheable(value = "Categories")
     public ResponseEntity<List<CategoryDto>> getCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
