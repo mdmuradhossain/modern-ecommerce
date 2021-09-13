@@ -2,6 +2,7 @@ package io.murad.modern.ecommerce.service;
 
 import io.murad.modern.ecommerce.database.model.Address;
 import io.murad.modern.ecommerce.database.model.Country;
+import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AddressDto;
 import io.murad.modern.ecommerce.exception.AddressNotFoundException;
 import io.murad.modern.ecommerce.mapper.AddressMapper;
@@ -23,8 +24,12 @@ public class AddressService {
     private final AddressMapper addressMapper;
     private final CountryRepository countryRepository;
 
-    public void addAddress(AddressDto addressDto) {
-        addressRepository.save(addressMapper.mapToAddress(addressDto));
+    public void addAddress(AddressDto addressDto, User user) {
+        Country country = countryRepository.findByCountryName(addressDto.getCountryName());
+        addressRepository.save(addressMapper.mapToAddress(addressDto,country,user));
+//        Address address = new Address();
+//        address.setStreet(addressDto.getStreet());
+//        address.setUser(user);
         log.info("Address Saved..");
     }
 

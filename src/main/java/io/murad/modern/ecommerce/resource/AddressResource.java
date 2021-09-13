@@ -1,12 +1,15 @@
 package io.murad.modern.ecommerce.resource;
 
 
+import io.murad.modern.ecommerce.database.model.User;
 import io.murad.modern.ecommerce.dto.AddressDto;
+import io.murad.modern.ecommerce.repository.UserRepository;
 import io.murad.modern.ecommerce.service.AddressService;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +20,12 @@ import java.util.List;
 public class AddressResource {
 
     private final AddressService addressService;
+    private final UserRepository userRepository;
 
     @PostMapping()
-    public ResponseEntity<?> createdAddress(@RequestBody AddressDto addressDto) {
-        addressService.addAddress(addressDto);
+    public ResponseEntity<?> createdAddress(@RequestBody AddressDto addressDto, Authentication authentication) {
+        User user = userRepository.findByUsername(authentication.getName()).get();
+        addressService.addAddress(addressDto,user);
         return new ResponseEntity<>("Address created", HttpStatus.CREATED);
     }
 
