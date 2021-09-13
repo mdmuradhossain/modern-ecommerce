@@ -38,7 +38,7 @@
 ---
 
 ### Swagger UI
-![APIs](https://github.com/mdmuradhossain/modern-ecommerce/blob/main/src/main/resources/static/images/swagger-ui.png)
+![APIs](https://github.com/mdmuradhossain/modern-ecommerce/blob/main/src/main/resources/static/images/swagger-ui-update.png)
 ---
 ### Postman API Testing
 ![Postman testing](https://github.com/mdmuradhossain/modern-ecommerce/blob/main/src/main/resources/static/images/authresponse.png)
