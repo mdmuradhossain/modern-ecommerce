@@ -88,6 +88,7 @@ public class AuthService {
         Set<Role> roles = new HashSet<>();
         roleRepository.findByRoleName("USER").ifPresent(roles::add);
         user.setRoles(roles);
+        user.setFullName(registerRequest.getFullName());
         userRepository.save(user);
         log.info("User Saved..." + user.getUsername());
         String token = generateAccountVerificationToken(user);

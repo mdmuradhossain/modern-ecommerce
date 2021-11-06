@@ -16,4 +16,5 @@ public class ProductResponse {
     private String price;
     private Integer stock;
     private Boolean bestseller;
+
 }

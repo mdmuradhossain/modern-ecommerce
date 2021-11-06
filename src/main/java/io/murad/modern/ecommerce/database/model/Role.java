@@ -38,7 +38,7 @@ public class Role implements Serializable {
     private Set<User> users;
 
     @JsonManagedReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "roles_authorities",
             joinColumns = @JoinColumn(

@@ -51,6 +51,7 @@ public class JwtAuthenticationProvider {
 //        io.murad.modern.ecommerce.database.model.User principal = (io.murad.modern.ecommerce.database.model.User) authentication.getPrincipal();
 //        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
 //        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+//        CustomUserDetails myUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails principal = (CustomUserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(principal.getUsername())

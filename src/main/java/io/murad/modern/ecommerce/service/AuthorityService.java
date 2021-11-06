@@ -4,10 +4,12 @@ import io.murad.modern.ecommerce.database.model.Authority;
 import io.murad.modern.ecommerce.repository.AuthorityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class AuthorityService {
     private final AuthorityRepository authorityRepository;
