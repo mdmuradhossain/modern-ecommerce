@@ -1,7 +1,6 @@
 package io.murad.modern.ecommerce.database.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -50,7 +49,10 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Order> orders;
 
+
+
     @JsonManagedReference
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {

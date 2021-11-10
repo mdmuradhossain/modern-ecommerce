@@ -39,9 +39,11 @@ public class UserService {
             throw new UsernameAlreadyExistsException("Username Already exist.");
         } else {
             user.setUsername(adminUserDto.getUsername());
+
         }
         user.setPassword(passwordEncoder.encode(adminUserDto.getPassword()));
         user.setEmailAddress(adminUserDto.getEmail());
+        user.setFullName(adminUserDto.getFullName());
         if (adminUserDto.getRoles() != null) {
             Set<Role> roles = adminUserDto
                     .getRoles()

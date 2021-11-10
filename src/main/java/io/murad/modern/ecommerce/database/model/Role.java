@@ -1,7 +1,9 @@
 package io.murad.modern.ecommerce.database.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -9,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,9 +36,12 @@ public class Role implements Serializable {
     private String description;
 
     @JsonBackReference
+//    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
     private Set<User> users;
+
+
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
