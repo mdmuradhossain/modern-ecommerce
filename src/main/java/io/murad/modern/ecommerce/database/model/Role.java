@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @ToString
 @RequiredArgsConstructor
 @Entity

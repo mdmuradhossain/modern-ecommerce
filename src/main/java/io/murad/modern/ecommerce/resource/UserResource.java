@@ -19,7 +19,7 @@ public class UserResource {
 
     private final UserService userService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/add",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> createUser(@RequestBody AdminUserDto adminUserDto) {
         userService.addUserOrAdmin(adminUserDto);

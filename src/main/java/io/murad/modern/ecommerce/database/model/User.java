@@ -12,8 +12,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-@Getter
-@Setter
+@Data
 @ToString
 @Entity
 @AllArgsConstructor
@@ -48,8 +47,6 @@ public class User implements Serializable {
             fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Order> orders;
-
-
 
     @JsonManagedReference
     @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
